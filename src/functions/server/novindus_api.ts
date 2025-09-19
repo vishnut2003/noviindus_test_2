@@ -129,19 +129,21 @@ export interface QuestionsResponseInterface {
     time_for_each_question: number,
     mark_per_each_answer: number,
     instruction: string,
-    questions: {
-        question_id: number,
-        number: number,
-        question: string,
-        comprehension: string,
+    questions: SingleQuestionInterface[]
+}
+
+export interface SingleQuestionInterface {
+    question_id: number,
+    number: number,
+    question: string,
+    comprehension: string,
+    image: string | null,
+    options: {
+        id: number,
         image: string | null,
-        options: {
-            id: number,
-            image: string | null,
-            is_correct: boolean,
-            option: string,
-        }[],
-    }[]
+        is_correct: boolean,
+        option: string,
+    }[],
 }
 
 export async function fetchQuestions({ access_token }: {
@@ -158,6 +160,10 @@ export async function fetchQuestions({ access_token }: {
                     }
                 }
             );
+
+            if (!data.success) {
+                throw new Error("Something went wrong");
+            }
 
             return resolve(data)
 

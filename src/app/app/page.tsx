@@ -1,14 +1,65 @@
 'use client';
 
+import ErrorTemplate from '@/components/ui-element/ErrorTemplate';
+import LoadingElement from '@/components/ui-element/LoadingElement';
+import { handleCatchBlock } from '@/functions/common';
 import { QuestionsResponseInterface } from '@/functions/server/novindus_api';
 import axios from 'axios'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { saveQuestions } from "@/store/slices/questions";
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const InstructionsPage = () => {
 
-  async function startExam() {
-    const { data } = await axios.get<QuestionsResponseInterface>("/api/noviindus/fetch-questions");
-    console.log(data);
+  const [error, setError] = useState<string | null>(null);
+  const [inProgress, setInProgress] = useState<boolean>(false);
+
+  const [stats, setStats] = useState<{
+    questionsCount: number,
+    totalMarks: number,
+    totalTime: number,
+  }>();
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  useEffect(() => {
+    setInProgress(true)
+    axios.get<QuestionsResponseInterface>("/api/noviindus/fetch-questions")
+      .then(({ data }) => {
+        setStats({
+          totalTime: data.total_time,
+          questionsCount: data.questions_count,
+          totalMarks: data.total_marks,
+        })
+
+        dispatch(saveQuestions(data.questions))
+
+      })
+      .catch((err) => {
+        const message = handleCatchBlock(err);
+        setError(message);
+      })
+      .finally(() => setInProgress(false))
+  }, [])
+
+  function startExam () {
+    const endTime = Date.now() + 10 * 60 * 1000;
+    localStorage.setItem("exam_end_time", endTime.toString());
+    router.push("/app/question?number=1");
+  }
+
+  if (inProgress) {
+    return <LoadingElement />
+  }
+
+  if (error) {
+    return (
+      <ErrorTemplate
+        message={error}
+      />
+    )
   }
 
   return (
@@ -25,15 +76,15 @@ const InstructionsPage = () => {
           [
             {
               label: "Total MCQ’s:",
-              value: "100",
+              value: stats?.questionsCount,
             },
             {
               label: "Total marks:",
-              value: "100",
+              value: stats?.totalMarks,
             },
             {
               label: "Total time:",
-              value: "90:00",
+              value: stats?.totalTime,
             },
           ]
             .map((item, index) => (
@@ -87,7 +138,9 @@ const InstructionsPage = () => {
       >
         <button
           className='primary-btn bg-theme-primary max-w-[250px] mx-auto text-white'
-          onClick={startExam}
+          onClick={() => {
+            startExam();
+          }}
         >
           Start Test
         </button>
