@@ -84,7 +84,7 @@ const CreateAccountPage = ({
         await signIn("Credentials", {
             callbackUrl: "/app",
             name: formData.name,
-            email: formData.name,
+            email: formData.email,
         })
 
         setInProgress(false)
