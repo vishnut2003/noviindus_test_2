@@ -1,6 +1,7 @@
 "use server"
 
 import axios from "axios";
+import { handleCatchBlock } from "../common";
 
 const NOVIINDUS_BASE_URL = "https://nexlearn.noviindusdemosites.in";
 
@@ -59,6 +60,9 @@ export async function verifyOtp({
                 formData,
             )
 
+            console.log("From Verify OTP");
+            console.log(data)
+
             if (!data.success) {
                 throw new Error(`Verify OTP failed: ${data.message || "Something went wrong"}`);
             }
@@ -75,6 +79,8 @@ interface CreateProfileReponseInterface {
     success: boolean,
     message: string,
     user: UsersDetailsInterface,
+    access_token: string,
+    refresh_token: string,
 }
 
 interface UsersDetailsInterface {
@@ -89,8 +95,8 @@ export interface CreateProfileRequestInterface {
     profile_image: File,
 }
 
-export async function createProfile (data: CreateProfileRequestInterface) {
-    return new Promise<UsersDetailsInterface>(async (resolve, reject) => {
+export async function createProfile(data: CreateProfileRequestInterface) {
+    return new Promise<string>(async (resolve, reject) => {
         try {
 
             const formData = new FormData();
@@ -98,19 +104,66 @@ export async function createProfile (data: CreateProfileRequestInterface) {
             for (const [key, value] of Object.entries(data)) {
                 formData.append(key, value);
             }
-            
+
             const {
                 data: response,
             } = await axios.post<CreateProfileReponseInterface>(`${NOVIINDUS_BASE_URL}/auth/create-profile`, formData);
-            
+
             if (!response.success) {
                 throw new Error(`Create Profile Failed: ${response.message || "Something went wrong"}`);
             }
 
-            return resolve(response.user);
+            return resolve(response.access_token);
 
         } catch (err) {
             return reject(err);
+        }
+    })
+}
+
+export interface QuestionsResponseInterface {
+    success: boolean,
+    questions_count: number,
+    total_marks: number,
+    total_time: number,
+    time_for_each_question: number,
+    mark_per_each_answer: number,
+    instruction: string,
+    questions: {
+        question_id: number,
+        number: number,
+        question: string,
+        comprehension: string,
+        image: string | null,
+        options: {
+            id: number,
+            image: string | null,
+            is_correct: boolean,
+            option: string,
+        }[],
+    }[]
+}
+
+export async function fetchQuestions({ access_token }: {
+    access_token: string,
+}) {
+    return new Promise<QuestionsResponseInterface>(async (resolve, reject) => {
+        try {
+
+            const { data } = await axios.get<QuestionsResponseInterface>(
+                `${NOVIINDUS_BASE_URL}/question/list`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${access_token}`,
+                    }
+                }
+            );
+
+            return resolve(data)
+
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            return reject(message);
         }
     })
 }

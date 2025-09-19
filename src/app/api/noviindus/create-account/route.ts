@@ -1,5 +1,6 @@
 import { handleCatchBlock } from "@/functions/common";
 import { createProfile, CreateProfileRequestInterface } from "@/functions/server/novindus_api";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -15,8 +16,19 @@ export async function POST(request: NextRequest) {
             profile_image: formData.get("profile_image") as File,
         }
 
-        const user = await createProfile(userData);
-        return NextResponse.json(user)
+        const access_token = await createProfile(userData);
+
+        const cookiesData = await cookies();
+        cookiesData.set({
+            name: "access_token",
+            value: access_token,
+            httpOnly: true,
+            secure: true,
+            path: "/",
+            maxAge: 60 * 60 * 24,
+        });
+
+        return NextResponse.json(true);
 
     } catch (err) {
         const message = handleCatchBlock(err);

@@ -10,6 +10,7 @@ import { CreateProfileRequestInterface } from '@/functions/server/novindus_api';
 import ErrorTemplate from '@/components/ui-element/ErrorTemplate';
 import { LoginPagesList } from '../page';
 import axios from 'axios';
+import { handleCatchBlock } from '@/functions/common';
 
 const CreateAccountPage = ({
     mobile,
@@ -73,13 +74,18 @@ const CreateAccountPage = ({
             newFormData.append(key, value);
         }
 
-        const {
-            data: userData
-        } = await axios.post("/api/noviindus/create-account", newFormData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
-        });
+        try {
+            await axios.post("/api/noviindus/create-account", newFormData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                }
+            });
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            setError(message);
+            setInProgress(false);
+            return;
+        }
 
         await signIn("Credentials", {
             callbackUrl: "/app",
