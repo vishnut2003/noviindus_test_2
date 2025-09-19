@@ -1,14 +1,94 @@
 'use client';
 
 import AuthLayout from '@/layouts/AuthLayout'
-import React, { useState } from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import { RiCameraLine, RiCloseLargeLine } from "@remixicon/react";
 import AuthField from '@/components/ui-element/AuthField';
 import Image from 'next/image';
+import { signIn } from "next-auth/react";
+import { CreateProfileRequestInterface } from '@/functions/server/novindus_api';
+import ErrorTemplate from '@/components/ui-element/ErrorTemplate';
+import { LoginPagesList } from '../page';
+import axios from 'axios';
 
-const CreateAccountPage = () => {
+const CreateAccountPage = ({
+    mobile,
+}: {
+    mobile: string,
+}) => {
+
+    const [inProgress, setInProgress] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const [profile, setProfile] = useState<File | null>(null);
+    const [formData, setFormData] = useState<{
+        name: string,
+        email: string,
+        qualification: string,
+    }>({
+        email: "",
+        name: "",
+        qualification: "",
+    });
+
+    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+        setFormData(prev => ({
+            ...prev,
+            [event.target.name]: event.target.value,
+        }))
+    }
+
+    async function handleSubmitAction() {
+        setError(null);
+        setInProgress(true)
+
+        for (const [key, value] of Object.entries({
+            ...formData,
+            "Profile Image": profile,
+        })) {
+            if (!value) {
+                setError(`${key} is required`);
+                setInProgress(false);
+                return;
+            }
+        }
+
+        const mailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!mailReg.test(formData.email)) {
+            setError("Email format is not correct");
+            setInProgress(false);
+            return;
+        }
+
+        const requestData: CreateProfileRequestInterface = {
+            ...formData,
+            profile_image: profile!,
+            mobile,
+        }
+
+        const newFormData = new FormData();
+
+        for (const [key, value] of Object.entries(requestData)) {
+            newFormData.append(key, value);
+        }
+
+        const {
+            data: userData
+        } = await axios.post("/api/noviindus/create-account", newFormData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        });
+
+        await signIn("Credentials", {
+            callbackUrl: "/app",
+            name: formData.name,
+            email: formData.name,
+        })
+
+        setInProgress(false)
+    }
 
     return (
         <AuthLayout>
@@ -78,8 +158,11 @@ const CreateAccountPage = () => {
                         >
                             <input
                                 type='text'
-                                className='outline-none'
+                                className='outline-none w-full'
                                 placeholder='Enter your Full Name'
+                                value={formData.name}
+                                name='name'
+                                onChange={handleInputChange}
                             />
                         </AuthField>
 
@@ -88,8 +171,11 @@ const CreateAccountPage = () => {
                         >
                             <input
                                 type='email'
-                                className='outline-none'
+                                name='email'
+                                className='outline-none w-full'
                                 placeholder='Enter your Email Address'
+                                value={formData.email}
+                                onChange={handleInputChange}
                             />
                         </AuthField>
 
@@ -98,8 +184,11 @@ const CreateAccountPage = () => {
                         >
                             <input
                                 type='text'
-                                className='outline-none'
+                                className='outline-none w-full'
                                 placeholder='Enter your qualification'
+                                name='qualification'
+                                value={formData.qualification}
+                                onChange={handleInputChange}
                             />
                         </AuthField>
                     </div>
@@ -107,9 +196,18 @@ const CreateAccountPage = () => {
 
                 <button
                     className='primary-btn bg-theme-primary text-white'
+                    onClick={handleSubmitAction}
+                    disabled={inProgress}
                 >
-                    Create Account
+                    {inProgress ? "Loading..." : "Create Account"}
                 </button>
+
+                {
+                    error &&
+                    <ErrorTemplate
+                        message={error}
+                    />
+                }
             </div>
         </AuthLayout>
     )

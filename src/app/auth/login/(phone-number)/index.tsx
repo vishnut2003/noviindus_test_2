@@ -1,10 +1,45 @@
+'use client';
+
 import AuthField from '@/components/ui-element/AuthField'
+import ErrorTemplate from '@/components/ui-element/ErrorTemplate';
 import AuthLayout from '@/layouts/AuthLayout'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { LoginPagesList } from '../page';
+import { handleCatchBlock } from '@/functions/common';
+import axios from 'axios';
 
-const AuthPhoneNumber = () => {
+const AuthPhoneNumber = ({
+    setMobile: saveMobile,
+    setCurrentPage,
+}: {
+    setMobile: Dispatch<SetStateAction<string>>,
+    setCurrentPage: Dispatch<SetStateAction<LoginPagesList>>,
+}) => {
+
+    const [inProgress, setInProgress] = useState<boolean>(false)
+    const [error, setError] = useState<null | string>(null)
+
+    const [mobile, setMobile] = useState<string>("");
+    const [countryCode] = useState("+91");
+
+    async function handleMobileSubmit() {
+        setError("");
+        setInProgress(true)
+
+        try {
+            await axios.post("/api/noviindus/send-otp", { mobile: `${countryCode}${mobile}` });
+            saveMobile(`${countryCode}${mobile}`);
+            setCurrentPage("verify-otp");
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            setError(message);
+        }
+
+        setInProgress(false);
+    }
+
     return (
         <AuthLayout>
             <div
@@ -34,6 +69,26 @@ const AuthPhoneNumber = () => {
                             type="text"
                             className='outline-none w-full'
                             placeholder='88 912 312 36'
+                            value={mobile}
+                            onChange={(event) => {
+
+                                if (!event.target.value) {
+                                    setMobile("");
+                                    return;
+                                }
+
+                                try {
+                                    const value = parseInt(event.target.value);
+                                    if (isNaN(value)) {
+                                        return;
+                                    }
+
+                                    setMobile(`${value}`);
+                                } catch (err) {
+                                    console.error("Please enter Phone number")
+                                    return;
+                                }
+                            }}
                         />
                     </AuthField>
 
@@ -51,9 +106,20 @@ const AuthPhoneNumber = () => {
 
                 <button
                     className='primary-btn bg-theme-primary text-white'
+                    onClick={handleMobileSubmit}
+                    disabled={inProgress}
                 >
-                    Get Started
+                    {
+                        inProgress ? "Loading..." : "Get Started"
+                    }
                 </button>
+
+                {
+                    error &&
+                    <ErrorTemplate
+                        message={error}
+                    />
+                }
             </div>
         </AuthLayout>
     )

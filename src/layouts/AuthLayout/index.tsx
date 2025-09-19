@@ -1,8 +1,17 @@
 import AuthFieldSlideEffect from '@/components/ui-element/AuthFieldSlideEffect'
+import { getClientSession } from '@/functions/client/auth'
+import { getServerSession } from 'next-auth'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 
 const AuthLayout = ({ children }: PropsWithChildren<{}>) => {
+
+    useEffect(() => {
+        getClientSession()
+            .then((session) => {})
+    }, [])
+
     return (
         <div
             className='w-screen h-screen bg-center bg-cover bg-no-repeat flex items-center justify-center'
