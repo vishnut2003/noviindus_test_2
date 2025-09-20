@@ -14,6 +14,9 @@ declare module "next-auth" {
 }
 
 const handler = NextAuth({
+    session: {
+        strategy: "jwt"
+    },
     providers: [
         Credentials({
             id: "Credentials",
@@ -69,6 +72,7 @@ const handler = NextAuth({
             return session;
         },
     },
+    secret: process.env.NEXTAUTH_URL_JWT,
 })
 
 export { handler as GET, handler as POST };

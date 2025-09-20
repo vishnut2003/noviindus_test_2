@@ -11,7 +11,7 @@ const LoginPage = () => {
 
     const [currentPage, setCurrentPage] = useState<LoginPagesList>("phone-number");
 
-    const [mobile, setMobile] = useState<string>("+918891029928");
+    const [mobile, setMobile] = useState<string>("");
 
     if (currentPage == "phone-number") {
         return (

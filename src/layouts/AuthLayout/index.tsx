@@ -1,21 +1,8 @@
 import AuthFieldSlideEffect from '@/components/ui-element/AuthFieldSlideEffect'
-import { getClientSession } from '@/functions/client/auth'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { PropsWithChildren, useEffect } from 'react'
+import React, { PropsWithChildren } from 'react'
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
-
-    const router = useRouter();
-
-    useEffect(() => {
-        getClientSession()
-            .then((session) => {
-                if (session.user) {
-                    router.push("/app")
-                }
-            })
-    }, [router])
 
     return (
         <div

@@ -75,7 +75,7 @@ const ReviewExam = ({ closePopup }: {
 
         return () => clearInterval(intervel);
 
-    }, [questions, stats])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     async function handleTestSubmit() {
 

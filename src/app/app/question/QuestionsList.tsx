@@ -36,7 +36,7 @@ const SidebarQuestionsList = () => {
 
         return () => clearInterval(intervel);
 
-    }, [questions, router, timeDiff])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div

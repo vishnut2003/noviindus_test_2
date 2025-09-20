@@ -60,9 +60,6 @@ export async function verifyOtp({
                 formData,
             )
 
-            console.log("From Verify OTP");
-            console.log(data)
-
             if (!data.success) {
                 throw new Error(`Verify OTP failed: ${data.message || "Something went wrong"}`);
             }
