@@ -19,16 +19,16 @@ const AuthLayout = ({ children }: PropsWithChildren<{}>) => {
 
     return (
         <div
-            className='w-screen h-screen bg-center bg-cover bg-no-repeat flex items-center justify-center'
+            className='w-screen min-h-screen bg-center bg-cover bg-no-repeat flex items-center justify-center p-[15px]'
             style={{
                 backgroundImage: "url(/images/authlayout-bg-image.jpg)",
             }}
         >
-            <div className='bg-black/50 absolute top-0 left-0 w-full h-full z-0' />
+            <div className='bg-black/50 absolute top-0 left-0 w-full h-max md:h-full z-0' />
             <div
-                className='z-10 flex items-stretch bg-gradient-to-b from-theme-primary to-theme-secondary max-w-[900px] min-h-[400px] w-full p-[10px] rounded-[16]'
+                className='z-10 flex flex-col md:flex-row items-stretch bg-gradient-to-b from-theme-primary to-theme-secondary max-w-[900px] min-h-[400px] w-full p-[10px] rounded-[16]'
             >
-                <div className='bg-black/30 absolute top-0 left-0 w-full h-full z-0' />
+                <div className='bg-black/30 absolute top-0 left-0 w-full md:h-full z-0' />
 
                 <div
                     className='w-full z-10 flex flex-col items-center justify-between gap-[60px] py-[25px] px-[50px]'
@@ -49,7 +49,7 @@ const AuthLayout = ({ children }: PropsWithChildren<{}>) => {
                             src={"/images/auth-vector-image.png"}
                             width={336}
                             height={262}
-                            className='w-full'
+                            className='w-[60%] md:w-full mx-auto'
                         />
                     </div>
                 </div>

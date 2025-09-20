@@ -40,7 +40,7 @@ const SidebarQuestionsList = () => {
 
     return (
         <div
-            className='min-w-[500px] h-full p-[20px] space-y-[25px] flex flex-col items-center justify-between'
+            className='min-w-full md:min-w-[500px] h-full p-[20px] space-y-[25px] flex flex-col items-center justify-between'
         >
             <div
                 className="space-y-[25px] w-full"

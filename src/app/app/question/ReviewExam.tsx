@@ -110,7 +110,7 @@ const ReviewExam = ({ closePopup }: {
     if (success) {
         return (
             <motion.div
-                className='absolute top-0 left-0 w-full h-full z-20 bg-white flex items-center justify-center p-[30px]'
+                className='fixed top-0 left-0 w-full h-full z-20 bg-white flex items-center justify-center p-[30px]'
                 initial={{
                     opacity: 0,
                 }}
@@ -212,7 +212,7 @@ const ReviewExam = ({ closePopup }: {
 
     return (
         <motion.div
-            className='absolute top-0 left-0 w-full h-full z-20 bg-black/50 flex items-center justify-center p-[30px]'
+            className='fixed top-0 left-0 w-full h-full z-20 bg-black/50 flex items-center justify-center p-[30px]'
             initial={{
                 opacity: 0,
             }}

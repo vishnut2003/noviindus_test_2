@@ -78,7 +78,7 @@ const InstructionsPage = () => {
         className='text-[26px] font-medium text-theme-primary text-center'
       >Ancient Indian History MCQ</h1>
       <div
-        className='flex items-center bg-theme-primary rounded-[7px] text-white py-[25px]'
+        className='flex flex-col md:flex-row items-center bg-theme-primary rounded-[7px] text-white py-[25px]'
       >
         {
           [
@@ -98,7 +98,7 @@ const InstructionsPage = () => {
             .map((item, index) => (
               <div
                 key={index}
-                className={`w-full text-center space-y-[10px] px-[25px] ${index !== 0 ? "border-l border-white" : ""}`}
+                className={`w-full text-center space-y-[10px] px-[25px] py-[10px] ${index !== 0 ? "border-t md:border-l md:!border-t-0 border-white" : ""}`}
               >
                 <p
                   className='text-[15px] font-medium'

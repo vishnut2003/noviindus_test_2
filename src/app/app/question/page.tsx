@@ -8,7 +8,7 @@ const QuestionsPage = () => {
 
   return (
     <div
-      className='flex items-start w-full'
+      className='flex flex-col md:flex-row items-start w-full'
     >
       <QuestionTemplate/>
       <SidebarQuestionsList />

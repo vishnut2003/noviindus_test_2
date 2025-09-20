@@ -7,7 +7,7 @@ const QuestionDescriptionPopup = ({ content, closePopup }: {
 }) => {
     return (
         <motion.div
-            className='absolute top-0 left-0 w-full h-full z-20 bg-black/40 flex items-center justify-center'
+            className='fixed top-0 left-0 w-full h-full z-20 bg-black/40 flex items-center justify-center'
             initial={{
                 opacity: 0,
             }}

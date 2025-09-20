@@ -11,7 +11,7 @@ const TaskHeader = () => {
             className='w-full mx-auto flex items-center'
         >
             <div
-                className='flex justify-center w-full'
+                className='flex justify-start md:justify-center w-full'
             >
                 <Image
                     alt='Logo'

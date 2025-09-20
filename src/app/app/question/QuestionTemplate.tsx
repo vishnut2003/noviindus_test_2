@@ -121,7 +121,7 @@ const QuestionTemplate = () => {
             </div>
 
             <div
-                className='flex items-center gap-[30px] text-sm'
+                className='flex flex-col md:flex-row items-center gap-[10px] md:gap-[30px] text-sm'
             >
                 {
                     [
