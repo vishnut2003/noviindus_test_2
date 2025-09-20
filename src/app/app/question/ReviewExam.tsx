@@ -43,24 +43,15 @@ const ReviewExam = ({ closePopup }: {
             ...prev,
             totalQuestions: questions.length,
         }))
-        questions.forEach((question) => {
-            if (question.status === "attended") {
-                setStats(prev => ({
-                    ...prev,
-                    questionsAnswered: ++prev.questionsAnswered,
-                }))
-            } else if (question.status === "ans_for_review" || question.status === "for_review") {
-                setStats(prev => ({
-                    ...prev,
-                    answersForReview: ++prev.answersForReview,
-                }))
-            } else if (question.status === "not_attended") {
-                setStats(prev => ({
-                    ...prev,
-                    notAttended: ++prev["notAttended"]
-                }))
-            }
-        })
+        
+        const answered = questions.filter((question) => question.status === "attended" || question.status === "ans_for_review");
+        const forReview = questions.filter((question) => question.status === "for_review" || question.status === "ans_for_review");
+
+        setStats(prev => ({
+            ...prev, 
+            questionsAnswered: answered.length,
+            answersForReview: forReview.length,
+        }))
 
         const _endTime = localStorage.getItem("exam_end_time");
         if (!_endTime) {
@@ -173,7 +164,7 @@ const ReviewExam = ({ closePopup }: {
                                 {
                                     icon: RiQuestionMark,
                                     label: "Not Attended Questions:",
-                                    value: stats.notAttended,
+                                    value: finalResponse?.not_attended,
                                     color: "bg-gray-700",
                                 }
                             ]
@@ -268,7 +259,7 @@ const ReviewExam = ({ closePopup }: {
                             {
                                 icon: RiQuestionMark,
                                 label: "Total Questions:",
-                                value: stats.totalQuestions.toString().padEnd(3, "0"),
+                                value: stats.totalQuestions.toString().padStart(3, "0"),
                                 color: "bg-yellow-500"
                             },
                             {
@@ -280,7 +271,7 @@ const ReviewExam = ({ closePopup }: {
                             {
                                 icon: RiQuestionMark,
                                 label: "Marked for review:",
-                                value: stats.answersForReview.toString().padEnd(3, "0"),
+                                value: stats.answersForReview.toString().padStart(3, "0"),
                                 color: "bg-violet-600"
                             },
                         ]
