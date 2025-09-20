@@ -197,7 +197,6 @@ export async function submitExam ({
 }) {
     return new Promise<SubmitExamResponse>(async (resolve, reject) => {
         try {
-            console.log(data.answers)
             const formData = new FormData();
             formData.append("answers", JSON.stringify(data.answers));
 

@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json() as SubmitExamRequestData;
-        console.log(body);
 
         const response = await submitExam({
             access_token: token,

@@ -20,9 +20,6 @@ const SingleQuestionLayout = ({ children }: PropsWithChildren) => {
         const endTimeNumber = parseInt(endTime);
         const diff = endTimeNumber - Date.now();
 
-        console.log("questions")
-        console.log(questions)
-
         if (diff <= 0 || !questions || questions.length === 0) {
             localStorage.removeItem("exam_end_time");
             router.push("/app");

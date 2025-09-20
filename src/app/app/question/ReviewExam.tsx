@@ -94,8 +94,6 @@ const ReviewExam = ({ closePopup }: {
                 answers: data,
             })
 
-            console.log(response);
-
             setFinalResponse(response);
             setSuccess(true)
 

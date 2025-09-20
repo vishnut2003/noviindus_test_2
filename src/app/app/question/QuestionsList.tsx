@@ -14,8 +14,6 @@ const SidebarQuestionsList = () => {
     const questions = useSelector((state: RootState) => state.questions.questionsReducer.data);
 
     useEffect(() => {
-        console.log("Last")
-        console.log(questions)
         const _endTime = localStorage.getItem("exam_end_time");
         if (!_endTime) {
             router.push("/app");
