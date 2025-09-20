@@ -4,38 +4,48 @@ Please follow the steps below to set up and run the project on your local machin
 
 ---
 
-## 1. Create a `.env` File
+1. **Create a `.env` File**
 
-Create a file named `.env` in the root directory of the project, and add the following environment variables:
+Create a file named `.env` in the root directory of the project and add the following environment variables:
 
-```env
+```
 NEXTAUTH_SECRET=<HASH_VALUE>
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-> ⚠️ **Note:**
->
-> * Replace `<HASH_VALUE>` with your actual secret key.
-> * Ensure the URL does **not** have a trailing slash.
+Note:
+
+* Replace `<HASH_VALUE>` with your actual secret key.
+* Make sure the URL does **not** have a trailing slash.
 
 ---
 
-## 2. Build the Project
+2. **Install Dependencies**
 
-Once the `.env` file is set up, run the following command to build the project:
+Run the following command to install all required project dependencies:
 
-```bash
+```
+npm install
+```
+
+---
+
+3. **Build the Project**
+
+After installing the dependencies, build the project using:
+
+```
 npm run build
 ```
 
 ---
 
-## 3. Start the Server
+4. **Start the Server**
 
-After building the project, start the server with:
+Once the build is complete, start the server with:
 
-```bash
+```
 npm start
 ```
 
-> This will start the application on `http://localhost:3000`.
+This will launch the application at: [http://localhost:3000](http://localhost:3000)
