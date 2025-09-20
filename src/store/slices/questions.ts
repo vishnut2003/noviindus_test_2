@@ -5,7 +5,7 @@ interface QuestionsState {
     data: SingleQuestionState[],
 }
 
-interface SingleQuestionState {
+export interface SingleQuestionState {
     question_id: number,
     number: number,
     question: string,
@@ -42,9 +42,39 @@ const questionSlice = createSlice({
             }
 
             state.data = questions;
+        },
+        selectOption: (state, action: PayloadAction<{
+            questionId: number,
+            optionId: number,
+        }>) => {
+            const newData = state.data.map((question) => {
+                if (question.question_id === action.payload.questionId) {
+                    return ({
+                        ...question,
+                        selectedOption: action.payload.optionId,
+                    })
+                } else {
+                    return question;
+                }
+            })
+
+            state.data = newData;
+        },
+        changeStatus: (state, action: PayloadAction<{
+            status: SingleQuestionState["status"],
+            questionId: number,
+        }>) => {
+            state.data.map((question) => {
+                if (question.question_id === action.payload.questionId) {
+                    question.status = action.payload.status;
+                }
+            })
+        },
+        resetData: (state) => {
+            state.data = [];
         }
     }
 })
 
-export const { saveQuestions } = questionSlice.actions;
+export const { saveQuestions, selectOption, changeStatus, resetData } = questionSlice.actions;
 export default questionSlice.reducer;

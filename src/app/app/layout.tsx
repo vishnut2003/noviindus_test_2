@@ -3,13 +3,19 @@
 import TaskLayout from '@/layouts/TaskLayout'
 import React, { PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
-import { store } from "@/store";
+import { store, persistor } from "@/store";
+import { PersistGate } from 'redux-persist/integration/react';
 
 const AppLayout = ({ children }: PropsWithChildren) => {
     return (
         <TaskLayout>
             <Provider store={store}>
-                {children}
+                <PersistGate
+                    persistor={persistor}
+                    loading={null}
+                >
+                    {children}
+                </PersistGate>
             </Provider>
         </TaskLayout>
     )

@@ -173,3 +173,53 @@ export async function fetchQuestions({ access_token }: {
         }
     })
 }
+
+export interface SubmitExamRequestData {
+    answers: {
+        question_id: number,
+        selected_option_id: number | null,
+    }[]
+}
+
+export interface SubmitExamResponse {
+    success: boolean,
+    exam_history_id: string,
+    score: number,
+    correct: number,
+    wrong: number,
+    not_attended: number,
+    submitted_at: number,
+}
+
+export async function submitExam ({
+    access_token,
+    data,
+}: {
+    data: SubmitExamRequestData,
+    access_token: string,
+}) {
+    return new Promise<SubmitExamResponse>(async (resolve, reject) => {
+        try {
+            console.log(data.answers)
+            const formData = new FormData();
+            formData.append("answers", JSON.stringify(data.answers));
+
+            const {
+                data: response,
+            } = await axios.post<SubmitExamResponse>(
+                `${NOVIINDUS_BASE_URL}/answers/submit`,
+                formData,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${access_token}`,
+                    }
+                }
+            )
+
+            return resolve(response);
+
+        } catch (err) {
+            return reject(err);
+        }
+    })
+}

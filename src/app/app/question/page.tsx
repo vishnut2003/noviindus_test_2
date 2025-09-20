@@ -1,16 +1,17 @@
-import React from 'react'
+'use client';
+
+import React, { useEffect, useState } from 'react'
+import SidebarQuestionsList from './QuestionsList'
+import QuestionTemplate from './QuestionTemplate';
 
 const QuestionsPage = () => {
+
   return (
     <div
-        className='flex items-start'
+      className='flex items-start w-full'
     >
-        <div
-            className='w-full px-[20px]'
-        ></div>
-        <div
-            className='w-full px-[20px]'
-        ></div>
+      <QuestionTemplate/>
+      <SidebarQuestionsList />
     </div>
   )
 }

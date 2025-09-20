@@ -26,6 +26,14 @@ const InstructionsPage = () => {
 
   useEffect(() => {
     setInProgress(true)
+
+    const endTime = localStorage.getItem("exam_end_time");
+
+    if (endTime) {
+      router.push("/app/question?number=1");
+      return;
+    }
+
     axios.get<QuestionsResponseInterface>("/api/noviindus/fetch-questions")
       .then(({ data }) => {
         setStats({
