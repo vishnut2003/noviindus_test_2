@@ -1,14 +1,13 @@
 'use client';
 
 import AuthLayout from '@/layouts/AuthLayout'
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { RiCameraLine, RiCloseLargeLine } from "@remixicon/react";
 import AuthField from '@/components/ui-element/AuthField';
 import Image from 'next/image';
 import { signIn } from "next-auth/react";
 import { CreateProfileRequestInterface } from '@/functions/server/novindus_api';
 import ErrorTemplate from '@/components/ui-element/ErrorTemplate';
-import { LoginPagesList } from '../page';
 import axios from 'axios';
 import { handleCatchBlock } from '@/functions/common';
 

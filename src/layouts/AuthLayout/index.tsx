@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { PropsWithChildren, useEffect } from 'react'
 
-const AuthLayout = ({ children }: PropsWithChildren<{}>) => {
+const AuthLayout = ({ children }: PropsWithChildren) => {
 
     const router = useRouter();
 
@@ -15,7 +15,7 @@ const AuthLayout = ({ children }: PropsWithChildren<{}>) => {
                     router.push("/app")
                 }
             })
-    }, [])
+    }, [router])
 
     return (
         <div

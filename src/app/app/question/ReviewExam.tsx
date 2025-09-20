@@ -73,9 +73,9 @@ const ReviewExam = ({ closePopup }: {
 
         const intervel = setInterval(updateTimer, 1000);
 
-        () => clearInterval(intervel);
+        return () => clearInterval(intervel);
 
-    }, [])
+    }, [questions, stats])
 
     async function handleTestSubmit() {
 

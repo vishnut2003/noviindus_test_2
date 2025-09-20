@@ -1,6 +1,5 @@
 import AuthField from '@/components/ui-element/AuthField'
 import AuthLayout from '@/layouts/AuthLayout'
-import Link from 'next/link'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { LoginPagesList } from '../page'
 import axios from 'axios'
@@ -27,7 +26,7 @@ const AuthVerifyOtp = ({
                 setResendTimer(resendTimer - 1);
             }
         }, 1000)
-    }, [])
+    }, [resendTimer])
 
     async function handleVerifyOtp() {
         setError(null);

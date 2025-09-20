@@ -85,8 +85,10 @@ const AuthPhoneNumber = ({
 
                                     setMobile(`${value}`);
                                 } catch (err) {
-                                    console.error("Please enter Phone number")
-                                    return;
+                                    if (err) {
+                                        console.error("Please enter Phone number")
+                                        return;
+                                    }
                                 }
                             }}
                         />

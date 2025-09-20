@@ -4,8 +4,7 @@ import LoadingElement from '@/components/ui-element/LoadingElement';
 import { RootState } from '@/store';
 import { changeStatus, selectOption, SingleQuestionState } from '@/store/slices/questions';
 import { RiQuoteText } from '@remixicon/react';
-import { button } from 'framer-motion/client';
-import { redirect, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import ReviewExam from './ReviewExam';
@@ -38,7 +37,7 @@ const QuestionTemplate = () => {
             return;
         }
 
-    })
+    }, [searchParams, questions])
 
     if (!currentQuestion) {
         return (

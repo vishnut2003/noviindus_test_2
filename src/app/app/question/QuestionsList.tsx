@@ -34,9 +34,9 @@ const SidebarQuestionsList = () => {
 
         const intervel = setInterval(updateTimer, 1000);
 
-        () => clearInterval(intervel);
+        return () => clearInterval(intervel);
 
-    }, [])
+    }, [questions, router, timeDiff])
 
     return (
         <div

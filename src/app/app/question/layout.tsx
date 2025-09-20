@@ -27,7 +27,7 @@ const SingleQuestionLayout = ({ children }: PropsWithChildren) => {
             localStorage.removeItem("exam_end_time");
             router.push("/app");
         }
-    }, [])
+    }, [questions, router])
 
     return (
         <>

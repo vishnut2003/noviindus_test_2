@@ -3,7 +3,7 @@
 import React, { PropsWithChildren } from 'react'
 import { motion } from "framer-motion";
 
-const AuthFieldSlideEffect = ({ children }: PropsWithChildren<{}>) => {
+const AuthFieldSlideEffect = ({ children }: PropsWithChildren) => {
     return (
         <motion.div
             className='w-full h-full'

@@ -50,7 +50,7 @@ const InstructionsPage = () => {
         setError(message);
       })
       .finally(() => setInProgress(false))
-  }, [])
+  }, [dispatch, router])
 
   function startExam () {
     const endTime = Date.now() + 10 * 60 * 1000;
